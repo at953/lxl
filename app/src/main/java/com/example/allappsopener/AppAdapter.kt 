@@ -1,0 +1,42 @@
+package com.example.allappsopener
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+
+class AppAdapter(
+        private val appList: List<AppInfo>,
+            private val onAppClick: (AppInfo) -> Unit
+) : RecyclerView.Adapter<AppAdapter.ViewHolder>() {
+
+        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+                    val iconView: ImageView = view.findViewById(R.id.appIcon)
+                            val nameView: TextView = view.findViewById(R.id.appName)
+                                    val packageView: TextView = view.findViewById(R.id.appPackage)
+        }
+
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+                        val view = LayoutInflater.from(parent.context)
+                                    .inflate(R.layout.item_app, parent, false)
+                                            return ViewHolder(view)
+            }
+
+                override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+                            val app = appList[position]
+                                    holder.nameView.text = app.appName
+                                            holder.packageView.text = app.packageName
+                                                    holder.iconView.setImageDrawable(app.icon)
+                                                            holder.itemView.setOnClickListener { onAppClick(app) }
+                }
+
+                    override fun getItemCount() = appList.size
+}
+
+                }
+            }
+        }
+}
+)
