@@ -1,32 +1,38 @@
-名字: Build APK
+name: Build APK
 
-在:
-推:
-分支: [掌握,主要的]
-工作流_调度:
+on:
+  push:
+    branches: [ master, main ]
+  workflow_dispatch:
 
-工作:
-建设:
-连续运行: Ubuntu-最新版
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-步伐:
-      - 使用: 动作/签出@v4
+    steps:
+      - uses: actions/checkout@v4
 
-      - 名字: 建立JDK 17号
-使用: 操作/设置-java@v4
-随着:
-java版本: '17'
-分布: 特穆林
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-      - 名字: 授予格拉德卢执行权限
-奔跑: chmod +x梯度
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
 
-      - 名字: 构建调试APK
-奔跑: 。/grad Lew组装的bug
+      - name: Generate gradlew
+        run: gradle wrapper
 
-      - 名字: 上传APK
-使用: 动作/上传-工件@v4
-随着:
-名字: 应用程序调试
-小路: 应用程序/构建/输出/apk/调试/应用程序调试。apk
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
 
