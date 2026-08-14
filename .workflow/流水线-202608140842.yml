@@ -1,0 +1,33 @@
+version: '1.0'
+name: 'android-apk-build'
+displayName: 'Android APK 构建'
+triggers:
+  trigger: auto
+    push:
+        branches:
+              include:
+                      - master
+                      stages:
+                        - name: stage_build
+                            displayName: '构建'
+                                strategy: naturally
+                                    trigger: auto
+                                        executor: []
+                                            steps:
+                                                  - step: build@gradle
+                                                          name: build_gradle
+                                                                  displayName: Gradle 构建
+                                                                          gradleVersion: '7.6'
+                                                                                  jdkVersion: '17'
+                                                                                          commands:
+                                                                                                    - chmod +x ./gradlew
+                                                                                                              - ./gradlew assembleRelease
+                                                                                                                      artifacts:
+                                                                                                                                - name: BUILD_ARTIFACT
+                                                                                                                                            path:
+                                                                                                                                                          - app/build/outputs/apk/release/*.apk
+                                                                                                                                                                  caches:
+                                                                                                                                                                            - ~/.gradle/caches
+                                                                                                                                                                                    strategy:
+                                                                                                                                                                                              retry: '0'
+                                                                                                                                                                                              
