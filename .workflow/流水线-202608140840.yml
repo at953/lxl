@@ -1,0 +1,29 @@
+version: '1.0'
+name: 'android-apk-build'
+displayName: 'Android APK 构建'
+triggers:
+  push:
+      branches:
+            - master
+
+            stages:
+              - name: 'build'
+                  displayName: '构建'
+                      executor:
+                            - name: default
+                                    image: 'ubuntu:22.04'
+                                            shell: 'bash'
+                                                steps:
+                                                      - step: shell@bash
+                                                              name: 'build_apk'
+                                                                      displayName: '构建 APK'
+                                                                              commands:
+                                                                                        - apt-get update && apt-get install -y openjdk-17-jdk
+                                                                                                  - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+                                                                                                            - export PATH=$JAVA_HOME/bin:$PATH
+                                                                                                                      - cd /root/workspace/lxlnb988/lxl
+                                                                                                                                - chmod +x ./gradlew
+                                                                                                                                          - ./gradlew assembleRelease
+                                                                                                                                                    - echo "构建完成"
+                                                                                                                                                              - ls -lh app/build/outputs/apk/release/
+                                                                                                                                                              
