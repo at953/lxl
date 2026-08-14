@@ -1,0 +1,39 @@
+version: "1.0"
+name: 流水线-202608140831
+displayName: 流水线-202608140831
+stages:
+- name: 未命名
+  displayName: 未命名
+  strategy: naturally
+  trigger: auto
+  steps:
+  - step: build@android
+    name: 0fb3d558
+    displayName: Android 构建
+    jdkVersion: "21"
+    gradleVersion: "9.0"
+    buildToolsVersion: 35.0.1
+    ndkVersion: 28.2.13676358
+    commands:
+    - gradle assembleRelease
+    artifacts:
+    - name: BUILD_ARTIFACT
+      path:
+      - ./app/build/outputs/apk/release
+      type: .tar.gz
+    caches:
+    - "~/.gradle/caches"
+    strategy:
+      retry: "0"
+      resource:
+        cpu: "2"
+        memory: "4"
+triggers:
+  trigger: auto
+  push:
+    branches:
+      prefix:
+      - ""
+      precise: []
+      include: []
+notify: []
